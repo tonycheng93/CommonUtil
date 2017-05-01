@@ -1,6 +1,10 @@
 package com.sky.commonutil.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import com.sky.commonutil.http.core.HttpMethod;
+import com.sky.commonutil.model.GankEntity;
 
 import java.util.List;
 
@@ -35,6 +39,14 @@ public class GankHttpMethod extends HttpMethod<GankHttpService> {
     @Override
     public int getTimeOut() {
         return 10;
+    }
+
+    @Override
+    public Gson getGson() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .create();
+        return gson;
     }
 
     @Override

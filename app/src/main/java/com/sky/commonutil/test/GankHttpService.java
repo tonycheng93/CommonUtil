@@ -1,6 +1,7 @@
 package com.sky.commonutil.test;
 
 import com.sky.commonutil.http.core.HttpListResult;
+import com.sky.commonutil.model.GankEntity;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
