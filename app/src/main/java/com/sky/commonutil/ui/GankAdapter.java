@@ -1,15 +1,18 @@
 package com.sky.commonutil.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sky.commonutil.R;
 import com.sky.commonutil.model.GankEntity;
 
@@ -67,7 +70,9 @@ public class GankAdapter extends RecyclerView.Adapter {
             }
             final String author = gankEntity.getWho();
             if (!TextUtils.isEmpty(author)) {
-                textViewHolder.mTvAuthor.setText(author);
+                textViewHolder.mTvAuthor.setText("via " + author);
+            } else {
+                textViewHolder.mTvAuthor.setText("");
             }
             final String publishedAt = gankEntity.getPublishedAt();
             if (!TextUtils.isEmpty(publishedAt)) {
@@ -76,14 +81,21 @@ public class GankAdapter extends RecyclerView.Adapter {
         } else if (itemViewType == TYPE_TEXT_WITH_IMAGE) {
             ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
             final List<String> images = gankEntity.getImages();
-            Glide.with(mContext).load(images.get(0)).into(imageViewHolder.mIvImage);
+            Glide.with(mContext)
+                    .load(images.get(0))
+                    .asBitmap()
+                    .thumbnail(0.1f)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(imageViewHolder.mIvImage);
             final String desc = gankEntity.getDesc();
             if (!TextUtils.isEmpty(desc)) {
                 imageViewHolder.mTvDesc.setText(desc);
             }
             final String author = gankEntity.getWho();
             if (!TextUtils.isEmpty(author)) {
-                imageViewHolder.mTvAuthor.setText(author);
+                imageViewHolder.mTvAuthor.setText("via " + author);
+            } else {
+                imageViewHolder.mTvAuthor.setText("");
             }
             final String publishedAt = gankEntity.getPublishedAt();
             if (!TextUtils.isEmpty(publishedAt)) {
@@ -120,16 +132,21 @@ public class GankAdapter extends RecyclerView.Adapter {
             super(itemView);
             mTvDesc = (TextView) itemView.findViewById(R.id.tv_desc);
             mTvAuthor = (TextView) itemView.findViewById(R.id.tv_author);
+            mTvAuthor.setTextColor(Color.argb(87, 73, 73, 73));
             mTvTime = (TextView) itemView.findViewById(R.id.tv_time);
+            mTvTime.setTextColor(Color.argb(87, 73, 73, 73));
         }
     }
 
     private class ImageViewHolder extends TextViewHolder {
 
+        private RelativeLayout mRelativeLayout;
         private ImageView mIvImage;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
+            mRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.rl_layout);
+            mRelativeLayout.setBackgroundColor(Color.argb(42, 0, 0, 0));
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_image);
         }
     }

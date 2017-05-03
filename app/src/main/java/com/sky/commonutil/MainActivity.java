@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sky.commonutil.http.core.NoCompleteSubscriber;
 import com.sky.commonutil.model.GankEntity;
@@ -15,7 +14,8 @@ import com.sky.commonutil.ui.GankAdapter;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout
+        .OnRefreshListener {
 
     private static final String TAG = "MainActivity";
 
@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent)
-                , getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark));
+                , getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color
+                        .colorPrimaryDark));
         mRefreshLayout.setRefreshing(true);
         mRefreshLayout.setOnRefreshListener(this);
 
@@ -65,10 +66,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount()) {
-                Toast.makeText(MainActivity.this,"加载更多...",Toast.LENGTH_SHORT).show();
-                mPage += 1;
-                loadGankList();
+            if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter
+                    .getItemCount()) {
+                loadMore();
             }
         }
 
@@ -80,23 +80,45 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     };
 
     private void loadGankList() {
-        NoCompleteSubscriber<List<GankEntity>> subscriber = new NoCompleteSubscriber<List<GankEntity>>() {
-            @Override
-            public void onNext(List<GankEntity> gankEntities) {
-                if (gankEntities != null && gankEntities.size() > 0) {
-                    mGankEntityList = gankEntities;
-                    mAdapter.setData(mGankEntityList);
-                    mAdapter.notifyDataSetChanged();
-                    mRefreshLayout.setRefreshing(false);
-                }
-            }
+        NoCompleteSubscriber<List<GankEntity>> subscriber = new
+                NoCompleteSubscriber<List<GankEntity>>() {
+                    @Override
+                    public void onNext(List<GankEntity> gankEntities) {
+                        if (gankEntities != null && gankEntities.size() > 0) {
+                            mGankEntityList = gankEntities;
+                            mAdapter.setData(mGankEntityList);
+                            mAdapter.notifyDataSetChanged();
+                            mRefreshLayout.setRefreshing(false);
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable t) {
-                Log.d(TAG, "onError: " + t.toString());
-            }
-        };
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.d(TAG, "onError: " + t.toString());
+                    }
+                };
 
+        GankHttpMethod.getInstance().getGankList(subscriber, SIZE, mPage);
+    }
+
+    private void loadMore() {
+        mPage += 1;
+        NoCompleteSubscriber<List<GankEntity>> subscriber = new
+                NoCompleteSubscriber<List<GankEntity>>() {
+                    @Override
+                    public void onNext(List<GankEntity> gankEntities) {
+                        if (gankEntities != null && gankEntities.size() > 0) {
+                            mGankEntityList.addAll(gankEntities);
+                            mAdapter.setData(mGankEntityList);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.e(TAG, "onError: ", t);
+                    }
+                };
         GankHttpMethod.getInstance().getGankList(subscriber, SIZE, mPage);
     }
 }

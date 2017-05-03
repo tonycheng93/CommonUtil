@@ -43,10 +43,9 @@ public class GankHttpMethod extends HttpMethod<GankHttpService> {
 
     @Override
     public Gson getGson() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
                 .create();
-        return gson;
     }
 
     @Override
