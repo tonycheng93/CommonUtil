@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final String TAG = "MainActivity";
 
     private SwipeRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
     private GankAdapter mAdapter;
     private List<GankEntity> mGankEntityList;
     private LinearLayoutManager mLayoutManager;
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
 
         mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent)
                 , getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color
@@ -42,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mRefreshLayout.setOnRefreshListener(this);
 
         mAdapter = new GankAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addOnScrollListener(mOnScrollListener);
 
         onRefresh();
     }
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (gankEntities != null && gankEntities.size() > 0) {
                             mGankEntityList = gankEntities;
                             mAdapter.setData(mGankEntityList);
-                            mAdapter.notifyDataSetChanged();
                             mRefreshLayout.setRefreshing(false);
                         }
                     }
@@ -110,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         if (gankEntities != null && gankEntities.size() > 0) {
                             mGankEntityList.addAll(gankEntities);
                             mAdapter.setData(mGankEntityList);
-                            mAdapter.notifyDataSetChanged();
                         }
                     }
 

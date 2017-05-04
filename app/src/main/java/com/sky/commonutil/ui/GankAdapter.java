@@ -38,6 +38,7 @@ public class GankAdapter extends RecyclerView.Adapter {
 
     public void setData(List<GankEntity> gankEntityList) {
         mGankEntityList = gankEntityList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -76,7 +77,8 @@ public class GankAdapter extends RecyclerView.Adapter {
             }
             final String publishedAt = gankEntity.getPublishedAt();
             if (!TextUtils.isEmpty(publishedAt)) {
-                textViewHolder.mTvTime.setText(publishedAt);
+                String time = publishedAt.split("T")[0];
+                textViewHolder.mTvTime.setText(time);
             }
         } else if (itemViewType == TYPE_TEXT_WITH_IMAGE) {
             ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
@@ -93,13 +95,16 @@ public class GankAdapter extends RecyclerView.Adapter {
             }
             final String author = gankEntity.getWho();
             if (!TextUtils.isEmpty(author)) {
+                imageViewHolder.mTvAuthor.setTextColor(Color.parseColor("#FFFFFF"));
                 imageViewHolder.mTvAuthor.setText(String.format("via %s", author));
             } else {
                 imageViewHolder.mTvAuthor.setText("");
             }
             final String publishedAt = gankEntity.getPublishedAt();
             if (!TextUtils.isEmpty(publishedAt)) {
-                imageViewHolder.mTvTime.setText(publishedAt);
+                imageViewHolder.mTvTime.setTextColor(Color.parseColor("#FFFFFF"));
+                String time = publishedAt.split("T")[0];
+                imageViewHolder.mTvTime.setText(time);
             }
         }
     }
