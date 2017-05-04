@@ -59,7 +59,7 @@ public abstract class HttpMethod<T> {
         return null;
     }
 
-    public HttpMethod() {
+    protected HttpMethod() {
         Retrofit retrofit = null;
         if (getGson() == null) {
             retrofit = new Retrofit.Builder()
@@ -106,7 +106,7 @@ public abstract class HttpMethod<T> {
         return builder.build();
     }
 
-    public T getService() {
+    protected T getService() {
         return mService;
     }
 
@@ -115,11 +115,11 @@ public abstract class HttpMethod<T> {
             @Override
             public E apply(@NonNull HttpResult<E> eHttpResult) throws Exception {
                 if (eHttpResult != null) {
-                    if (eHttpResult.error){
+                    if (eHttpResult.error) {
                         if (eHttpResult.results != null) {
                             return eHttpResult.results;
                         }
-                    }else {
+                    } else {
                         throw new HttpException("there is something wrong !");
                     }
                 }

@@ -70,7 +70,7 @@ public class GankAdapter extends RecyclerView.Adapter {
             }
             final String author = gankEntity.getWho();
             if (!TextUtils.isEmpty(author)) {
-                textViewHolder.mTvAuthor.setText("via " + author);
+                textViewHolder.mTvAuthor.setText(String.format("via %s", author));
             } else {
                 textViewHolder.mTvAuthor.setText("");
             }
@@ -93,7 +93,7 @@ public class GankAdapter extends RecyclerView.Adapter {
             }
             final String author = gankEntity.getWho();
             if (!TextUtils.isEmpty(author)) {
-                imageViewHolder.mTvAuthor.setText("via " + author);
+                imageViewHolder.mTvAuthor.setText(String.format("via %s", author));
             } else {
                 imageViewHolder.mTvAuthor.setText("");
             }
@@ -124,9 +124,9 @@ public class GankAdapter extends RecyclerView.Adapter {
 
     private class TextViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mTvDesc;
-        public TextView mTvAuthor;
-        public TextView mTvTime;
+        TextView mTvDesc;
+        TextView mTvAuthor;
+        TextView mTvTime;
 
         private TextViewHolder(View itemView) {
             super(itemView);
@@ -143,7 +143,7 @@ public class GankAdapter extends RecyclerView.Adapter {
         private RelativeLayout mRelativeLayout;
         private ImageView mIvImage;
 
-        public ImageViewHolder(View itemView) {
+        ImageViewHolder(View itemView) {
             super(itemView);
             mRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.rl_layout);
             mRelativeLayout.setBackgroundColor(Color.argb(42, 0, 0, 0));
