@@ -7,7 +7,6 @@ import com.sky.commonutil.http.cache.ICache;
 import com.sky.commonutil.http.cache.impl.FileCache;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -89,9 +88,8 @@ public abstract class HttpMethod<T> {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     final Request.Builder requestBuilder = chain.request().newBuilder();
-                    final Iterator iterator = headers.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry entry = (Map.Entry) iterator.next();
+                    for (Object o : headers.entrySet()) {
+                        Map.Entry entry = (Map.Entry) o;
                         requestBuilder.addHeader((String) entry.getKey(), (String) entry.getValue());
                     }
                     return chain.proceed(requestBuilder.build());
