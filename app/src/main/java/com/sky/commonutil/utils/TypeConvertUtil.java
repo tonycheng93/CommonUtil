@@ -9,7 +9,7 @@ package com.sky.commonutil.utils;
  */
 public class TypeConvertUtil {
 
-    public final static int convertToInt(Object value, int defaultValue) {
+    public static int convertToInt(Object value, int defaultValue) {
         if (value == null || "".equals(value.toString().trim())) {
             return defaultValue;
         }
@@ -25,7 +25,7 @@ public class TypeConvertUtil {
         }
     }
 
-    public final static long convertToLong(Object value, long defaultValue) {
+    public static long convertToLong(Object value, long defaultValue) {
         if (value == null || "".equals(value.toString().trim())) {
             return defaultValue;
         }

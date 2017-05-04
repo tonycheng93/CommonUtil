@@ -115,8 +115,12 @@ public abstract class HttpMethod<T> {
             @Override
             public E apply(@NonNull HttpResult<E> eHttpResult) throws Exception {
                 if (eHttpResult != null) {
-                    if (eHttpResult.results != null) {
-                        return eHttpResult.results;
+                    if (eHttpResult.error){
+                        if (eHttpResult.results != null) {
+                            return eHttpResult.results;
+                        }
+                    }else {
+                        throw new HttpException("there is something wrong !");
                     }
                 }
                 return null;
